@@ -1,0 +1,32 @@
+apiVersion: k3d.io/v1alpha3
+kind: Simple
+name: poc
+servers: 1
+agents: 2
+kubeAPI:
+  host: "localhost"
+  hostIP: "0.0.0.0"
+  hostPort: "6445"
+volumes:
+  - volume: ${PWD}/data/k3dvol:/tmp/k3dvol
+ports:
+  - port: 80:80
+    nodeFilters:
+      - loadbalancer
+  - port: 8086-8089:30086-30089
+    nodeFilters:
+      - server:0
+  - port: 8080-8085:30080-30085
+    nodeFilters:
+      - agent:*
+registries:
+  create:
+    name: poc-registry
+    host: "0.0.0.0"
+    hostPort: "6000"
+options:
+  k3s:
+    nodeLabels:
+      - label: type=worker
+        nodeFilters:
+          - agent:*
