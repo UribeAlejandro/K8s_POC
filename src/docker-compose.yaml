@@ -1,0 +1,22 @@
+version: '3'
+name: poc-registry
+services:
+  api:
+    image: api:latest
+    build: ./api
+    container_name: api
+    environment:
+      - MONGO_HOST=mongo
+      - AUTH_SERVICE_HOST=auth
+    ports:
+      - "800:80"
+    depends_on: [mongodb, auth]
+  auth:
+    image: auth:latest
+    build: ./auth
+    container_name: auth
+    ports:
+      - "801:80"
+  mongodb:
+    image: mongo:latest
+    container_name: mongo

@@ -41,7 +41,7 @@ For more details on the various options to create a k3d cluster [check this out]
 To create the cluster applying the configuration run in your terminal the following from the directory containing the [cluster configuration file](cluster/cluster.yaml)
 
 ```zsh
-k3d cluster create --config cluster.yaml
+k3d cluster create --config cluster/cluster.yaml
 ```
 
 - Note that you need to create a directory in your pc `k3dvol` and mount it to the cluster by replacing the path to the
@@ -113,3 +113,25 @@ k3d cluster list
 ```zsh
 k3d cluster delete poc
 ```
+
+8. To create a new cluster run
+
+```zsh
+k3d cluster create poc
+```
+
+## API development
+
+Within the directory `src/` there is  two folders: `api/` & `auth/` with their respective `Dockerfile`. There is also a `docker-compose.yaml` file to run the `API`, `AUTH` and a `mongo` database in a container.
+
+- **API**: Within the directory `src/api` there is a simple API developed with [FastAPI](https://fastapi.tiangolo.com/) to interact with the database.
+
+- **Authentication**: Within the directory `src/auth` there is a simple authentication service developed with [FastAPI](https://fastapi.tiangolo.com/) to mock the authentication service.
+
+To build the images and run the containers run
+
+```zsh
+docker-compose up --build
+```
+
+The `API` will be running in `localhost:800` and the `AUTH` service in `localhost:801`. You can check that the `API` is running by going to `localhost:800/docs` and the `AUTH` service by going to `localhost:801/docs`. The `mongo` database can be accessed with the `user/` endpoint in the `API` service.
